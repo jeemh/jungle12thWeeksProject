@@ -21,7 +21,7 @@ const LoginPage = ({
     Axios.post("http://localhost:8000/api/login", userData)
       .then((response) => {
         // 서버에서 받은 응답 확인
-        loginHandler(response.data.name); // 로그인 성공 시 부모 컴포넌트의 loginHandler 함수 호출
+        loginHandler(response.data); // 로그인 성공 시 부모 컴포넌트의 loginHandler 함수 호출
         // 예를 들어, 사용자를 다른 페이지로 리디렉션하거나 상태를 업데이트하는 등의 작업 수행
       })
       .catch((error) => {

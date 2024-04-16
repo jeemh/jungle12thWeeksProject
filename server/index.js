@@ -49,7 +49,8 @@ app.post("/api/login", (req, res) => {
         }
         if (result.length > 0) {
             // 사용자 아이디와 비밀번호가 일치하는 경우
-            res.send({ name: result[0].name });
+            console.log(result[0].member_id);
+            res.send({ name: result[0].name, id: result[0].member_id });
         } else {
             // 사용자 아이디 또는 비밀번호가 일치하지 않는 경우
             res.status(401).send("Incorrect user ID or password");
@@ -77,9 +78,11 @@ app.post("/detail", (req, res) => {
 app.post("/insert", (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
+    const writer = req.body.writer;
+    const writer_id = req.body.writer_id;
 
-    const sqlQuery = "INSERT INTO BOARD (BOARD_TITLE, BOARD_CONTENT, REGISTER_ID) VALUES (?,?,'artistJay');";
-    db.query(sqlQuery, [title, content], (err, result) => {
+    const sqlQuery = "INSERT INTO BOARD (BOARD_TITLE, BOARD_CONTENT, REGISTER_ID, REGISTER_KEY) VALUES (?,?,?,?);";
+    db.query(sqlQuery, [title, content, writer, writer_id], (err, result) => {
         res.send(result);
     });
 });

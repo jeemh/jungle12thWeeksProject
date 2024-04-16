@@ -20,17 +20,21 @@ class App extends Component {
     isComplete: true,
     isLogined: false,
     loginedMember: "",
+    loginedMemberId: 0,
     boardId: 0,
   };
 
-  loginHandler = (name: string) => {
+  loginHandler = (logerInfo: any) => {
     this.setState({ isLogined: true });
-    this.setState({ loginedMember: name });
+    console.log(logerInfo);
+    this.setState({ loginedMember: logerInfo.name });
+    this.setState({ loginedMemberId: logerInfo.member_id });
   };
 
   logoutHandler = () => {
     this.setState({ isLogined: false });
     this.setState({ loginedMember: "" });
+    this.setState({ loginedMemberId: 0 });
   };
 
   handleWriteButtonClick = () => {
@@ -145,6 +149,8 @@ class App extends Component {
               isModifyMode={this.state.isModifyMode}
               boardId={this.state.boardId}
               handleCancel={this.handleCancelWrite}
+              loginedMember={this.state.loginedMember}
+              loginedMemberId={this.state.loginedMemberId}
             ></Write>
           )}
       </div>

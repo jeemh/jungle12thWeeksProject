@@ -7,6 +7,8 @@ interface IProps {
   isModifyMode: boolean;
   boardId: number;
   handleCancel: any;
+  loginedMember: string;
+  loginedMemberId: number;
 }
 
 /**
@@ -37,11 +39,15 @@ class Write extends Component<IProps> {
     Axios.post("http://localhost:8000/insert", {
       title: this.state.title,
       content: this.state.content,
+      writer: this.props.loginedMember,
+      writer_id: this.props.loginedMemberId,
     })
       .then((res) => {
         this.setState({
           title: "",
           content: "",
+          writer: "",
+          writer_id: 0,
         });
         this.props.handleCancel();
       })
