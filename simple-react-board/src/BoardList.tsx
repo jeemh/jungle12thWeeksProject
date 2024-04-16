@@ -185,6 +185,15 @@ class BoardList extends Component<IProps> {
           </tbody>
         </Table>
         <Button
+          variant="warning"
+          onClick={() => {
+            this.props.handleReadButtonClick();
+            this.props.handleRead(this.state.checkList);
+          }}
+        >
+          댓글달기
+        </Button>
+        <Button
           variant="success"
           onClick={() => {
             this.props.handleReadButtonClick();

@@ -1,6 +1,7 @@
 import { Component } from "react";
 import Axios from "axios";
 import Button from "react-bootstrap/Button";
+import "./Read.css"; // CSS 파일 import
 
 interface IProps {
   isReadMode: boolean;
@@ -57,9 +58,11 @@ class Read extends Component<IProps, IState> {
     const { title, content } = this.state;
 
     return (
-      <div>
-        <h2>글 제목: {title}</h2>
-        <p>글 내용: {content}</p>
+      <div className="read-container">
+        {" "}
+        {/* read-container 클래스 추가 */}
+        <h2>제목: {title}</h2>
+        <h2>내용: {content}</h2>
         <Button variant="secondary" onClick={this.props.handleCancel}>
           취소
         </Button>
