@@ -61,16 +61,21 @@ class Write extends Component<IProps> {
       title: this.state.title,
       content: this.state.content,
       id: this.props.boardId,
+      writer_id: this.props.loginedMemberId,
     })
       .then((res) => {
         this.setState({
           title: "",
           content: "",
+          writer_id: 0,
         });
+        if (res.data.affectedRows === 0) {
+          alert("너는 게시글 쓴 사람이 아니야");
+        }
         this.props.handleCancel();
       })
       .catch((e) => {
-        console.error(e);
+        console.log("err");
       });
   };
 

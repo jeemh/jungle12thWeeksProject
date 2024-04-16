@@ -41,7 +41,8 @@ const Board = ({
 };
 
 interface IProps {
-  loginedMember: any;
+  loginedMember: string;
+  loginedMemberId: number;
   logoutHandler: any;
   isComplete: boolean;
   handleModify: any;
@@ -83,6 +84,7 @@ class BoardList extends Component<IProps> {
     this.state.checkList.forEach((v: any) => {
       boardIdList += `'${v}',`;
     });
+    console.log(boardIdList);
     this.setState({
       checkList: [],
       handleRead: false,
@@ -90,8 +92,12 @@ class BoardList extends Component<IProps> {
 
     Axios.post("http://localhost:8000/delete", {
       boardIdList: boardIdList.substring(0, boardIdList.length - 1),
+      deleterId: this.props.loginedMemberId,
     })
-      .then(() => {
+      .then((res) => {
+        if (res.data.affectedRows === 0) {
+          alert("너는 게시글 쓴 사람이 아니야");
+        }
         this.getList();
       })
       .catch((e) => {

@@ -8,6 +8,7 @@ import BoardList from "./BoardList";
 import Write from "./Write";
 import Read from "./Read";
 import LoginPage from "./LoginPage";
+import SignupPage from "./SignupPage";
 
 /**
  * App class
@@ -22,13 +23,13 @@ class App extends Component {
     loginedMember: "",
     loginedMemberId: 0,
     boardId: 0,
+    showSignup: false, // 회원가입 화면을 보여줄지 여부를 나타내는 상태
   };
 
   loginHandler = (logerInfo: any) => {
     this.setState({ isLogined: true });
-    console.log(logerInfo);
     this.setState({ loginedMember: logerInfo.name });
-    this.setState({ loginedMemberId: logerInfo.member_id });
+    this.setState({ loginedMemberId: logerInfo.id });
   };
 
   logoutHandler = () => {
@@ -97,6 +98,16 @@ class App extends Component {
     });
   };
 
+  // 회원가입 버튼 클릭 시 호출되는 함수
+  handleSignupButtonClick = () => {
+    this.setState({ showSignup: true }); // 회원가입 화면을 보이도록 설정
+  };
+
+  // 회원가입 취소 버튼 클릭 시 호출되는 함수
+  handleSignupCancel = () => {
+    this.setState({ showSignup: false }); // 회원가입 화면을 숨기도록 설정
+  };
+
   /**
    * @return {Component} Component
    */
@@ -113,8 +124,11 @@ class App extends Component {
           <div>지금 로그인되어있는 사람: {this.state.loginedMember}</div>
         )}
 
-        {!this.state.isLogined && (
+        {!this.state.isLogined && !this.state.showSignup && (
           <LoginPage loginHandler={this.loginHandler} />
+        )}
+        {!this.state.isLogined && this.state.showSignup && (
+          <SignupPage onCancel={this.handleSignupCancel} />
         )}
         {this.state.isLogined &&
           !(
@@ -124,6 +138,7 @@ class App extends Component {
           ) && (
             <BoardList
               loginedMember={this.state.loginedMember}
+              loginedMemberId={this.state.loginedMemberId}
               logoutHandler={this.logoutHandler}
               isComplete={this.state.isComplete}
               handleModify={this.handleModify}
@@ -153,6 +168,12 @@ class App extends Component {
               loginedMemberId={this.state.loginedMemberId}
             ></Write>
           )}
+        {/* 회원가입 버튼 */}
+        {!this.state.isLogined && !this.state.showSignup && (
+          <Button variant="link" onClick={this.handleSignupButtonClick}>
+            회원가입하기
+          </Button>
+        )}
       </div>
     );
   }

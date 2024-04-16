@@ -28,7 +28,7 @@ app.post("/api/signup", (req, res) => {
 
     const sqlQuery = "INSERT INTO MEMBERS (user_id, name, user_pw) VALUES (?,?,?);";
     db.query(sqlQuery, [userId, name, userPw], (err, result) => {
-        res.send({ sadfgasdf: result.insertId });
+        res.send(result);
     });
 });
 
@@ -49,7 +49,6 @@ app.post("/api/login", (req, res) => {
         }
         if (result.length > 0) {
             // 사용자 아이디와 비밀번호가 일치하는 경우
-            console.log(result[0].member_id);
             res.send({ name: result[0].name, id: result[0].member_id });
         } else {
             // 사용자 아이디 또는 비밀번호가 일치하지 않는 경우
@@ -91,19 +90,24 @@ app.post("/update", (req, res) => {
     const id = req.body.id;
     const title = req.body.title;
     const content = req.body.content;
+    const writer_id = req.body.writer_id;
+    console.log("/update id", id);
+    console.log("/update writer_id", writer_id);
 
-    const sqlQuery =
-        "UPDATE BOARD SET BOARD_TITLE = ?, BOARD_CONTENT = ?, UPDATER_ID = 'artistJay' WHERE BOARD_ID = ?;";
-    db.query(sqlQuery, [title, content, id], (err, result) => {
+    const sqlQuery = "UPDATE BOARD SET BOARD_TITLE = ?, BOARD_CONTENT = ? WHERE (BOARD_ID = ? AND REGISTER_KEY = ?);";
+    db.query(sqlQuery, [title, content, id, writer_id], (err, result) => {
+        console.log("/update result: ", result);
         res.send(result);
     });
 });
 
 app.post("/delete", (req, res) => {
     const id = req.body.boardIdList;
+    const deleter_id = req.body.deleterId;
+    console.log("/delete deleter_id: ", deleter_id);
 
-    const sqlQuery = `DELETE FROM BOARD WHERE BOARD_ID IN (${id})`;
-    db.query(sqlQuery, [id], (err, result) => {
+    const sqlQuery = `DELETE FROM BOARD WHERE BOARD_ID IN (${id}) AND REGISTER_KEY IN (${deleter_id})`;
+    db.query(sqlQuery, [id, deleter_id], (err, result) => {
         console.log(err);
         res.send(result);
     });
